@@ -3,16 +3,34 @@ name: Test Secrets in If Conditions
 on:
   workflow_dispatch:
 
+# jobs:
+#   test-secrets:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Check if secret exists
+#         if: ${{ secrets.MY_SECRET != '' }}
+#         run: echo "Secret is set"
+
+#       - name: Skip if secret missing
+#         if: ${{ secrets.MY_SECRET == '' }}
+#         run: echo "Secret is NOT set"
+
+#       - name: Always runs
+#         run: echo "This step always runs"
+
+env:
+  HAS_SECRET: ${{ secrets.MY_SECRET != '' }}
+
 jobs:
   test-secrets:
     runs-on: ubuntu-latest
     steps:
       - name: Check if secret exists
-        if: ${{ secrets.MY_SECRET != '' }}
+        if: ${{ env.HAS_SECRET == 'true' }}
         run: echo "Secret is set"
 
       - name: Skip if secret missing
-        if: ${{ secrets.MY_SECRET == '' }}
+        if: ${{ env.HAS_SECRET != 'true' }}
         run: echo "Secret is NOT set"
 
       - name: Always runs
